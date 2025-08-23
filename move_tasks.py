@@ -4,9 +4,6 @@ from datetime import datetime, timedelta
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 import pytz
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # -----------------------------
 # AUTHENTICATION
