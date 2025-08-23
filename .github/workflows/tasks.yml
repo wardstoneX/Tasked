@@ -1,0 +1,25 @@
+name: Move Google Tasks
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at 2 AM Berlin (CEST)
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  move-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install --upgrade google-api-python-client google-auth pytz
+
+      - name: Run task mover
+        run: python move_tasks.py
+        env:
+          GOOGLE_TASKS_TOKEN: ${{ secrets.GOOGLE_TASKS_TOKEN }}
