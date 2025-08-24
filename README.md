@@ -17,6 +17,7 @@ This tool automatically:
 - **Safe Task Moving**: Tasks are copied to the target list before deletion to prevent data loss
 - **Timezone Aware**: Uses Berlin timezone (easily configurable)
 - **Environment Variable Support**: Secure token management via environment variables
+- **Task Templates**: Automatically creates recurring tasks with subtasks based on configurable templates
 
 ## Prerequisites
 
@@ -110,12 +111,87 @@ crontab -e
 
 1. **List Detection**: Identifies existing task lists and creates missing ones
 2. **Weekday Management**: Renames the weekday list to represent the day after tomorrow
-3. **Task Processing**: Examines all tasks in "My Tasks" list
-4. **Date-Based Moving**: Moves tasks to appropriate lists based on due dates:
+3. **Task Redistribution**: Moves existing tasks between lists based on their due dates:
    - Overdue or today's tasks → "Today"
    - Tomorrow's tasks → "Tomorrow" 
    - Day after tomorrow's tasks → Weekday list (e.g., "Wednesday")
-   - Future tasks → Remain in "My Tasks"
+   - Future tasks → "My Tasks"
+4. **Template Processing**: Creates recurring tasks from templates based on weekday rules
+
+## Task Templates
+
+The tool supports recurring task templates that automatically create tasks with subtasks on specific days. Templates are defined in `task_templates.json`.
+
+### Template Structure
+
+```json
+{
+    "recurrence_templates": [
+        {
+            "title": "Daily Chores",
+            "weekday": "Everyday",
+            "subtasks": [
+                "Make bed",
+                "Clean kitchen",
+                "Feed pets"
+            ]
+        },
+        {
+            "title": "Sunday Chores",
+            "weekday": "Sunday",
+            "subtasks": [
+                "Laundry",
+                "Vacuum living room",
+                "Water plants"
+            ]
+        }
+    ]
+}
+```
+
+### Template Properties
+
+- **title**: The main task name that will appear in your task lists
+- **weekday**: When to create this task:
+  - `"Everyday"`: Creates the task in Today, Tomorrow, and the day-after lists
+  - `"Monday"`, `"Tuesday"`, etc.: Creates the task only when that day appears in your lists
+- **subtasks**: Array of subtask titles that will be created under the main task
+
+### How Templates Work
+
+1. **Smart Creation**: Templates only create tasks that don't already exist
+2. **Parent-Child Structure**: Main task becomes the parent, subtasks are nested underneath
+3. **Daily Processing**: Each time the script runs, it ensures templates are present in the appropriate lists
+4. **No Duplicates**: If a template task already exists, it won't be recreated
+
+### Customizing Templates
+
+Edit `task_templates.json` to add your own recurring tasks:
+
+```json
+{
+    "recurrence_templates": [
+        {
+            "title": "Morning Routine",
+            "weekday": "Everyday",
+            "subtasks": [
+                "Exercise",
+                "Meditation",
+                "Review daily goals"
+            ]
+        },
+        {
+            "title": "Weekly Planning",
+            "weekday": "Monday",
+            "subtasks": [
+                "Review last week",
+                "Set weekly priorities",
+                "Schedule important meetings"
+            ]
+        }
+    ]
+}
+```
 
 ## Configuration
 
@@ -145,6 +221,7 @@ my_tasks_id = ensure_list(service, lists, "My Tasks")  # Change "My Tasks"
 ├── requirements.txt             # Python dependencies
 ├── generate_token.py            # Authentication setup script
 ├── move_tasks.py               # Main task organizer script
+├── task_templates.json         # Recurring task templates configuration
 ├── .github/
 │   └── workflows/
 │       └── tasks.yml           # GitHub Actions workflow
@@ -199,6 +276,12 @@ The included workflow (`.github/workflows/tasks.yml`) provides automated executi
 - Check that tasks have due dates set
 - Verify timezone settings match your location
 - Ensure "My Tasks" list exists and contains tasks
+
+### Template Issues
+- Verify `task_templates.json` exists and has valid JSON syntax
+- Check that weekday names match exactly (e.g., "Monday", not "monday")
+- Ensure template tasks aren't being manually deleted before the script runs
+- Templates with `"Everyday"` will appear in Today, Tomorrow, and the weekday list
 
 ## Contributing
 
