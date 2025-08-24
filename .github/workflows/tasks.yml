@@ -1,10 +1,11 @@
+
 name: Move Google Tasks
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Daily at 2 AM Berlin (CEST)
+  # schedule:
+  #   - cron: '0 0 * * *'  # Daily at 2 AM Berlin (CEST)
   workflow_dispatch:       # Manual trigger
-
+  
 jobs:
   move-tasks:
     runs-on: ubuntu-latest
