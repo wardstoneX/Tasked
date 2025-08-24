@@ -1,4 +1,5 @@
-google-api-python-client==2.100.0
+oogle-api-python-client==2.100.0
 google-auth==2.21.0
-google-auth-oauthlib
-pytz
+google-auth-oauthlib==1.1.0
+pytz==2025.7
+python-dotenv==1.1.1

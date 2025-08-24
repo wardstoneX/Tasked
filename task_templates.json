@@ -1,0 +1,22 @@
+{
+    "recurrence_templates": [
+        {
+            "title": "Daily Chores",
+            "weekday": "Everyday",
+            "subtasks": [
+                "Make bed",
+                "Clean kitchen",
+                "Feed pets"
+            ]
+        },
+        {
+            "title": "Sunday Chores",
+            "weekday": "Sunday",
+            "subtasks": [
+                "Laundry",
+                "Vacuum living room",
+                "Water plants"
+            ]
+        }
+    ]
+}

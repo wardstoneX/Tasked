@@ -17,7 +17,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install --upgrade google-api-python-client google-auth pytz
+        run: pip install --upgrade -r requirements.txt
 
       - name: Run task mover
         run: python move_tasks.py
