@@ -55,18 +55,20 @@ This will:
 
 ### 4. Set Environment Variable
 
-For production use, set the token as an environment variable:
+Create a `.env` file in the project root to store your token securely:
 
 ```bash
-# Extract token content and set as environment variable
-export GOOGLE_TASKS_TOKEN="$(cat token.json)"
+# Create .env file with your token
+echo "GOOGLE_TASKS_TOKEN=$(cat token.json)" > .env
 ```
 
-Or add it to your shell profile (`.bashrc`, `.zshrc`, etc.):
+Your `.env` file should look like this:
 
-```bash
-echo 'export GOOGLE_TASKS_TOKEN="$(cat /path/to/your/project/token.json)"' >> ~/.zshrc
 ```
+GOOGLE_TASKS_TOKEN={"token": "your-token-here", "refresh_token": "your-refresh-token", ...}
+```
+
+**Note**: The `.env` file is already included in `.gitignore` to prevent accidental commits.
 
 ## Usage
 
@@ -225,6 +227,7 @@ my_tasks_id = ensure_list(service, lists, "My Tasks")  # Change "My Tasks"
 ├── .github/
 │   └── workflows/
 │       └── tasks.yml           # GitHub Actions workflow
+├── .env                        # Environment variables (you create)
 ├── client_secret.json          # Google API credentials (you provide)
 ├── token.json                  # Generated auth token (gitignored)
 └── .gitignore                 # Git ignore rules
@@ -255,7 +258,8 @@ The included workflow (`.github/workflows/tasks.yml`) provides automated executi
 
 ## Security Notes
 
-- `client_secret.json` and `token.json` are gitignored for security
+- `client_secret.json`, `token.json`, and `.env` are gitignored for security
+- Use `.env` file for local development to keep tokens secure
 - GitHub Actions uses repository secrets for secure token storage
 - Tokens have limited scope (only Google Tasks access)
 - Consider using service accounts for server deployments

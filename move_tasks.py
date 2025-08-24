@@ -6,9 +6,9 @@ from googleapiclient.discovery import build
 import pytz
 
 # dotenv is needed only for local runs
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-#load_dotenv()
+load_dotenv()
 
 # -----------------------------
 # AUTHENTICATION
